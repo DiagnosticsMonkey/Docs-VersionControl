@@ -18,7 +18,7 @@ Keeping your repositories close to the root of your storage drive helps prevent 
 When cloning an empty repository, you may want to set up the default branches.  
 Here’s a script to create a new repository with `trunk` and `develop` branches.
 
-> Save the script as `NewRepo.sh` and place it in the root of the directory your clone your repos to. That way, you can call it from inside your cloned repo with `../NewRepo,sh`
+> Save the script as `NewRepo.sh` and place it in the root of the directory your clone your repos to. That way, you can call it from inside your cloned repo with `../NewRepo.sh`
 
 ```bash
 #!/bin/bash
