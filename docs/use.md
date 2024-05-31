@@ -197,9 +197,51 @@ Stage all changes.
 git add .
 ```
 
+---
+
+Un-stage specific files.
+
+```bash
+git reset <file1> <file2>
+```
+
+Un-stage all changes.
+
+```bash
+git reset
+```
+
+---
+
+Stage file for deletion and delete from working area.
+
+```bash
+git rm <file1>
+```
+
+---
+
+Rename a file, retaining history tracking, staging that change for the next commit.
+
+```bash
+git mv <file_name> <new_name>
+```
+
 ### Branching
 
 Branches allow you to work on multiple features or fixes simultaneously.
+
+List all local branches
+```bash
+git branch
+```
+
+List all branches including remote
+```bash
+git branch -a
+```
+
+---
 
 Create and switch to a new local branch
 
@@ -221,6 +263,18 @@ git push -u origin <branch-name>
 > [!Note]
 > The above is shorthand for
 > `git push --set-upstream origin <branch-name>`
+
+---
+
+Merge a branch into the current branch
+```bash
+git merge <branch-name>
+```
+
+Delete a branch
+```bash
+git branch -d <branch-name>
+```
 
 ---
 
@@ -263,6 +317,8 @@ Create an annotated tag
 ```bash
 git tag -a <tag-name> -m "Tag message"
 ```
+
+---
 
 Push tags to the remote repository
 ```bash
