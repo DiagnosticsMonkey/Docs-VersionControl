@@ -9,6 +9,7 @@ Git is a distributed VCS (Version Control System), also referred to as a SCM (So
 graph RL
     subgraph Local Machine
         WD[Working Directory] -- add --> SA[Staging area]
+        SA -- reset --> WD
         SA -- commit --> LR[(Local Repository)]
         LR -.-> WD
     end
@@ -43,7 +44,9 @@ The Staging Area allows you to group changes before creating a commit. This can 
 > [!TIP|label:Common Actions]
 > - View changes in the staging area -> `git status`
 > - Add specific file to the staging area -> `git add <filename>`
+> - Remove a file from the staging area -> `git reset <filename>`
 > - Add *all* changes from PWD downwards -> `git add .`
+> - Remove *all* changes from the staging area -> `git reset`
 > - Remove a file from the working directory and stage the removal -> `git rm <filename>`
 
 ### **Local Repo**
