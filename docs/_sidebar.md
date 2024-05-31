@@ -1,3 +1,5 @@
 - [Introduction](/README)
-  - [SSH](/ssh)
-  - [Use](/use)
+
+- [SSH](/ssh)
+
+- [Use](/use)
