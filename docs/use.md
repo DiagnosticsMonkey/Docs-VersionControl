@@ -15,30 +15,106 @@ Keeping your repositories close to the root of your storage drive helps prevent 
 
 ### Setting Default Branches
 
-When initializing a new repository, you may want to set up the default branches according to your workflow. Here’s a script to create a new repository with `trunk` as the main branch and `develop` as a buffer branch.
+When cloning an empty repository, you may want to set up the default branches.  
+Here’s a script to create a new repository with `trunk` and `develop` branches.
+
+> Save the script as `NewRepo.sh` and place it in the root of the directory your clone your repos to. That way, you can call it from inside your cloned repo with `../NewRepo,sh`
 
 ```bash
 #!/bin/bash
 
-# Script to initialize a new Git repository with default branches and epoch tagging
+# Colour Codes
+RED='\033[91m'
+GREEN='\033[92m'
+YELLOW='\033[93m'
+BLUE='\033[94m'
+PURPLE='\033[95m'
+CYAN='\033[96m'
+# Styles
+UNDERLINE='\033[4m'
+BOLD='\033[1m'
+RESET='\033[0m'
 
-REPO_NAME=$1
+# Script Variables
+NewLn="\r\n"
+Author="TAKTAK"
+ScriptName="${0##*/}"
+ExUsage="Usage: After cloning an empty repo, run this script from inside the repo.${NewLn}   Example: ../${ScriptName}"
 
-if [ -z "$REPO_NAME" ]; then
-  echo "Usage: $0 <repo-name>"
-  exit 1
-fi
+# --------------
 
-mkdir $REPO_NAME
-cd $REPO_NAME
-git init -b trunk
-git checkout -b develop
-echo "# $REPO_NAME" > README.md
-git add README.md
-git commit -m "Initial commit on develop branch"
-git tag -a v0.0.1 -m "Epoch tag"
-git checkout trunk
-echo "Repository $REPO_NAME initialized with trunk and develop branches and epoch tag v0.0.1"
+# Functions for Error and Warning Handling
+print_header(){
+   echo -e "${PURPLE}${BOLD}$1${RESET}"
+}
+print_fatal_error() {
+   echo -e "${RED}${BOLD}Fatal Error: $1${RESET}"
+   exit 1
+}
+print_error() {
+   echo -e "${RED}${BOLD}Error: $1${RESET}"
+}
+print_warning() {
+   echo -e "${YELLOW}${BOLD}Warning: $1${RESET}"
+}
+print_success() {
+   echo -e "${GREEN}${BOLD}$1${RESET}"
+}
+print_info() {
+   echo -e "${BLUE}$1${RESET}"
+}
+print_separator() {
+   echo -e "${CYAN}------------------------------------${RESET}"
+}
+
+# --------------
+
+# We sudoed?
+check_sudo() {
+   if [ "$EUID" -ne 0 ]; then
+      print_fatal_error "Permissions you don't have; sudo you must."
+   fi
+}
+
+# --------------
+
+main() {
+   # Author and Usage
+   print_header "Script by: ${Author}${NewLn}   ${ExUsage}"
+   #print_usage "${ExUsage}"
+
+   # Do stuff
+   if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+      print_fatal_error "You have not run this script in a Git repo."
+   fi
+
+   # Grab branches
+   branches=$(git branch)
+
+   # Check for empty
+   if [ -z "${branches}" ]; then
+      # No branches found, so make some
+      print_info "No branches found. Continuing."
+      git checkout -b trunk
+      echo "# ReadMe" > README.md
+      git add README.md
+      git commit -m "Initial commit"
+      git push -u origin trunk
+      git checkout -b develop
+      git push -u origin develop
+      git tag -a v0.0.0 -m "Epoch tag"
+      git push --tags
+      print_info "Branches created, epoch tag set."
+   else
+      # Bang out
+      print_warning "Pre-existing branches found:${NewLn}${branches}"
+      print_fatal_error "You should only run this script on an empty repo."
+   fi
+
+   print_success "Script reached the end."
+}
+
+main "$@"
 
 ```
 
@@ -150,7 +226,7 @@ git push -u origin <branch-name>
 
 ### PRs (Pull Requests)
 
-Pull Requests are used to review and merge changes from one branch to another, typically from a feature branch to a main branch.
+Pull Requests are used to review and merge changes from one branch to another, typically from a feature branch to `develop`, or `develop` to `trunk`.
 
 1. Push your branch to the remote repository.
 1. Create a Pull Request on the hosting platform (e.g., GitHub, GitLab).
@@ -175,6 +251,23 @@ git submodule update --init
 ---
 
 ### Tags
+
+Tags are used to mark specific points in your repository’s history, typically for releases.
+
+Create a lightweight tag
+```bash
+git tag <tag-name>
+```
+
+Create an annotated tag
+```bash
+git tag -a <tag-name> -m "Tag message"
+```
+
+Push tags to the remote repository
+```bash
+git push --tags
+```
 
 ---
 
