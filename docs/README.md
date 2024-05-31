@@ -79,35 +79,47 @@ You can push your local commits to the Remote Repository and pull changes from i
 
 ## Branching
 
+Branches in Git are a useful way to work on different versions of a project simultaneously. A branch allows you to diverge from the main line of development and continue to work without affecting the main line.
+
+### **What is a Branch?**
+
+A branch is a lightweight movable pointer to a commit. When you start making commits, you’re working on a branch. You can create, delete, and switch between branches to manage different features, bug fixes, or experiments in your codebase.
+
+I prefer to use `trunk` as my primary branch, with `develop` used as a buffer in an effort to ensure `trunk` is never broken. By having `develop` I give myself and opportunity to spot errors during due-diligence checks once I've merged a development branch, prior to merging `develop` to `trunk`.
+
+
+### **Why Use Branches?**
+
+Branches allow you to:
+- Work on new features or bug fixes without affecting the main codebase.
+- Collaborate with others by working on separate branches.
+- Keep your main branch stable while working on potentially disruptive changes.
+- Test new ideas safely without the risk of breaking the main project.
+
+### **Common Branching Actions**
+
+> [!TIP|label:Common Actions]
+> - Create a new branch -> `git branch <branch-name>`
+> - Switch to a branch -> `git checkout <branch-name>` or `git switch <branch-name>`
+> - Create and switch to a new branch -> `git checkout -b <branch-name>` or `git switch -c <branch-name>`
+> - List all branches -> `git branch` or `git branch -a` (includes remote branches)
+> - Merge a branch into the current branch -> `git merge <branch-name>`
+> - Delete a branch -> `git branch -d <branch-name>` (use `-D` to force delete if necessary)
+
+### **Branching Workflow Example**
+
+Below is a simple example of a branching workflow visualized using a mermaid diagram. This shows creating a new branch called `develop`, making commits on both `trunk` (main branch) and `develop`, and then merging `develop` back into `trunk`.
+
 ```mermaid
 %%{init: {'logLevel': 'debug', 'theme': 'dark', 'gitGraph': {'showBranches': true, 'showCommitLabel':true, 'mainBranchName':'trunk'}}}%%
 gitGraph TB:
-    commit
-    commit
+    commit id:"Initial Commit"
     branch develop
     commit
     commit
     checkout trunk
-    commit
-    commit
     merge develop
+    checkout develop
     commit
     commit
 ```
-
-## Sub Title
-
-Wow, such a nice sub-title
-
-
-## H2
-
-More
-
-### H3
-
-Content
-
-#### H4
-
-Heyo, i'm not in sidebar due to depth setting in `index.html`
