@@ -5,7 +5,7 @@
 Keeping your repositories close to the root of your storage drive helps prevent issues with maximum path lengths, especially on Windows systems, where paths longer than 260 characters can cause problems.
 
 > [!Tip]
-> I highly recommend storing your repos in a consistent place.
+> We highly recommend storing your repos in a consistent place.
 >
 > I typically use `C:/git` or `~/git`
 
